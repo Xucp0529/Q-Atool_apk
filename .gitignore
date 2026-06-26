@@ -1,0 +1,14 @@
+# Buildozer build artifacts
+qa_app/.buildozer/
+qa_app/bin/
+qa_adder/.buildozer/
+qa_adder/bin/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/

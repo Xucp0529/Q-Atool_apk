@@ -1,0 +1,52 @@
+[app]
+
+# 应用基本信息
+title = Q&A 答题
+package.name = qaapp
+package.domain = com.qatool
+source.dir = .
+source.include_exts = py,html,css,js,json,txt
+version = 1.0
+
+# 依赖
+requirements = python3,flask
+
+# 应用入口
+main.py = main.py
+
+# 权限
+android.permissions = INTERNET
+
+# 全屏/方向
+orientation = portrait
+fullscreen = 0
+
+
+[android]
+
+# Android API 级别
+android.api = 29
+android.minapi = 29
+android.ndk = 25b
+
+# WebView bootstrap（Flask 应用使用）
+android.bootstrap = webview
+android.port = 5000
+
+# 架构
+android.arch = arm64-v8a
+
+# 允许系统 WebView
+android.webview_enable_safebrowsing = 0
+
+# 应用图标（可选，后续可替换）
+# icon.filename = %(source.dir)s/static/icon.png
+
+
+[buildozer]
+
+# 构建日志级别
+log_level = 2
+
+# 不输出过多警告
+warn_on_root = 1

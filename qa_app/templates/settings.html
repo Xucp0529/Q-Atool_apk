@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>设置 — Q&A 答题</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top App Bar -->
+    <header class="top-bar">
+      <button class="icon-btn" onclick="history.back()" title="返回">←</button>
+      <h1>设置</h1>
+      <div style="width:40px;"></div>
+    </header>
+
+    <!-- 内容区 -->
+    <main class="content">
+      <div class="card">
+        <div class="card-title">📂 题库选择</div>
+        <div class="card-content" style="display:flex;flex-direction:column;gap:12px;">
+          <p style="font-size:0.9rem;color:var(--md-on-surface-variant);">
+            选择要使用的问答题库文件
+          </p>
+
+          <div class="input-group">
+            <label class="input-label" for="qa-file-select">题库文件</label>
+            <div class="select-wrapper">
+              <select id="qa-file-select">
+                <option value="">加载中...</option>
+              </select>
+              <span class="select-arrow">▾</span>
+            </div>
+          </div>
+
+          <p style="font-size:0.75rem;color:var(--md-on-surface-variant);margin-top:4px;">
+            文件格式：每道题为「识别符 / 问题 / 答案 //」<br>
+            识别符 "ungd" = 不固定答案，"gd" = 固定答案
+          </p>
+
+          <button class="btn btn-primary btn-block" id="save-settings-btn">保存设置</button>
+        </div>
+      </div>
+
+      <div class="status-bar" id="status-bar"></div>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const qaFileSelect = document.getElementById("qa-file-select");
+    const saveBtn = document.getElementById("save-settings-btn");
+    const statusBar = document.getElementById("status-bar");
+    const toast = document.getElementById("toast");
+
+    let toastTimer;
+
+    function showToast(msg, isError = false) {
+      toast.textContent = msg;
+      toast.className = "toast" + (isError ? " error" : "");
+      toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    // 加载设置
+    async function loadSettings() {
+      try {
+        const resp = await fetch("/api/settings");
+        const data = await resp.json();
+
+        qaFileSelect.innerHTML = "";
+        if (data.available_files.length === 0) {
+          qaFileSelect.innerHTML = '<option value="">无可用题库</option>';
+          return;
+        }
+
+        data.available_files.forEach(f => {
+          const opt = document.createElement("option");
+          opt.value = f;
+          opt.textContent = f;
+          if (f === data.qa_file) opt.selected = true;
+          qaFileSelect.appendChild(opt);
+        });
+      } catch (e) {
+        showToast("加载设置失败", true);
+      }
+    }
+
+    // 保存设置
+    saveBtn.addEventListener("click", async () => {
+      const qaFile = qaFileSelect.value;
+      if (!qaFile) {
+        showToast("请选择题库文件", true);
+        return;
+      }
+
+      saveBtn.disabled = true;
+      try {
+        const resp = await fetch("/api/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ qa_file: qaFile }),
+        });
+        const data = await resp.json();
+        statusBar.textContent = data.status;
+        statusBar.className = "status-bar success";
+        showToast(data.status);
+      } catch (e) {
+        showToast("保存失败", true);
+      }
+      saveBtn.disabled = false;
+    });
+
+    loadSettings();
+  </script>
+</body>
+</html>

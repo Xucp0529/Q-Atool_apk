@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>QA 添加器</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top App Bar -->
+    <header class="top-bar">
+      <h1>📝 添加题目</h1>
+    </header>
+
+    <!-- 内容区 -->
+    <main class="content">
+      <!-- 题库选择 -->
+      <div class="card">
+        <div class="card-title">📂 选择题库</div>
+        <div class="input-group">
+          <div class="select-wrapper">
+            <select id="file-select">
+              <option value="">加载中...</option>
+            </select>
+            <span class="select-arrow">▾</span>
+          </div>
+          <div class="selected-hint" id="file-description"></div>
+        </div>
+        <div class="file-mgmt" style="margin-top:10px;">
+          <button class="btn btn-outline" id="new-file-btn">＋ 新增题库</button>
+          <button class="btn btn-outline" id="remove-file-btn">－ 移除题库</button>
+        </div>
+      </div>
+
+      <!-- 题型选择 -->
+      <div class="card">
+        <div class="card-title">📋 题型</div>
+        <div class="radio-group">
+          <div class="radio-chip">
+            <input type="radio" id="type-ungd" name="qa-type" value="ungd" checked>
+            <label for="type-ungd">ungd — 不固定答案</label>
+          </div>
+          <div class="radio-chip">
+            <input type="radio" id="type-gd" name="qa-type" value="gd">
+            <label for="type-gd">gd — 固定答案</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 问题输入 -->
+      <div class="card">
+        <div class="card-title">❓ 问题</div>
+        <textarea class="text-input" id="question-input"
+                  placeholder="在此输入问题内容...（支持多行）"></textarea>
+      </div>
+
+      <!-- 答案输入 -->
+      <div class="card">
+        <div class="card-title">✅ 答案</div>
+        <textarea class="text-input" id="answer-input"
+                  placeholder="在此输入答案内容...（支持多行）"></textarea>
+      </div>
+
+      <!-- 添加按钮 -->
+      <button class="btn btn-primary btn-block" id="add-btn">
+        ➕ 添加题目
+      </button>
+      <p style="text-align:center;font-size:0.75rem;color:var(--md-on-surface-variant);">
+        Ctrl + Enter 快捷添加
+      </p>
+
+      <!-- 状态栏 -->
+      <div class="status-bar" id="status-bar"></div>
+    </main>
+  </div>
+
+  <!-- 新增题库 Modal -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal">
+      <h2 id="modal-title">新增题库</h2>
+      <div class="input-group" style="margin-bottom:12px;">
+        <label class="input-label">文件名</label>
+        <input type="text" class="text-input" id="modal-filename"
+               placeholder="例如：my_qa.txt">
+      </div>
+      <div class="input-group" style="margin-bottom:16px;">
+        <label class="input-label">描述（可选）</label>
+        <input type="text" class="text-input" id="modal-description"
+               placeholder="题库描述...">
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="modal-cancel">取消</button>
+        <button class="btn btn-primary" id="modal-confirm">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 移除题库确认 Modal -->
+  <div class="modal-overlay hidden" id="remove-modal-overlay">
+    <div class="modal">
+      <h2>确认移除</h2>
+      <p id="remove-modal-message" style="margin-bottom:20px;color:var(--md-on-surface-variant);"></p>
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="remove-modal-cancel">取消</button>
+        <button class="btn btn-error" id="remove-modal-confirm">确认移除</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>

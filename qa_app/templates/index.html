@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Q&A 答题</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top App Bar -->
+    <header class="top-bar">
+      <h1>Q&A 答题</h1>
+      <div class="top-bar-actions">
+        <button class="icon-btn" id="clear-forgotten-btn" title="清除遗忘记录">🗑</button>
+        <button class="icon-btn" id="settings-btn" title="设置">⚙</button>
+      </div>
+    </header>
+
+    <!-- 内容区 -->
+    <main class="content">
+      <!-- 进度 -->
+      <div class="progress-chip" id="progress-chip">📝 加载中...</div>
+
+      <!-- 题目卡片 -->
+      <div class="card hidden" id="question-card">
+        <div class="card-title">📋 题目</div>
+        <div class="card-content" id="question-text"></div>
+      </div>
+
+      <!-- 答题区 -->
+      <div id="answering-section" class="hidden">
+        <div class="input-group">
+          <label class="input-label" for="answer-input">请输入答案</label>
+          <input type="text" class="text-input" id="answer-input"
+                 placeholder="在此输入你的答案..." autocomplete="off">
+        </div>
+        <button class="btn btn-primary btn-block" id="submit-btn">提交答案</button>
+      </div>
+
+      <!-- ungd 结果区 -->
+      <div id="ungd-result-section" class="hidden">
+        <div class="answer-card">
+          <div class="card-title">✅ 标准答案</div>
+          <div class="card-content" id="ungd-answer"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" id="remember-btn">记得</button>
+          <button class="btn btn-outline" id="forget-btn">忘记了</button>
+        </div>
+        <button class="btn btn-primary btn-block hidden" id="next-btn-1">下一题 →</button>
+      </div>
+
+      <!-- gd 结果区 -->
+      <div id="gd-result-section" class="hidden">
+        <div class="compare-section">
+          <div class="compare-header">你的答案</div>
+          <div class="compare-body" id="your-answer-display"></div>
+        </div>
+        <div class="compare-section" style="margin-top:8px;">
+          <div class="compare-header">标准答案</div>
+          <div class="compare-body" id="correct-answer-display"></div>
+        </div>
+        <button class="btn btn-primary btn-block hidden" id="next-btn-2">下一题 →</button>
+      </div>
+
+      <!-- 状态栏 -->
+      <div class="status-bar" id="status-bar"></div>
+    </main>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal">
+      <h2>确认操作</h2>
+      <p id="modal-message"></p>
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="modal-cancel">取消</button>
+        <button class="btn btn-error" id="modal-confirm">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
