@@ -13,31 +13,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install deps
+      - name: Install Buildozer
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip libssl-dev libffi-dev libltdl-dev
-
-      - name: Install Buildozer
-        run: pip install cython buildozer
+          pip install cython buildozer
 
       - name: Build APK
         working-directory: qa_app
+        env:
+          JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         run: buildozer android debug
 
       - name: Copy APK out
         run: |
-          echo "=== buildozer dists ==="
-          find .buildozer/android/platform -name "*.apk" -type f 2>/dev/null
-          echo "=== gradle outputs ==="
-          find .buildozer -path "*/build/outputs/apk/*.apk" 2>/dev/null
-          echo "=== copying to output/ ==="
           mkdir -p output
           find . -name "*.apk" -type f -exec cp -v {} output/ \; 2>/dev/null
-          find /tmp -name "*.apk" -type f -exec cp -v {} output/ \; 2>/dev/null
-          find /home -name "*.apk" -type f -exec cp -v {} output/ \; 2>/dev/null
-          echo "=== output contents ==="
-          ls -la output/ 2>/dev/null || echo "output dir empty"
+          ls -la output/ || echo "output empty"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -52,31 +44,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install deps
+      - name: Install Buildozer
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip libssl-dev libffi-dev libltdl-dev
-
-      - name: Install Buildozer
-        run: pip install cython buildozer
+          pip install cython buildozer
 
       - name: Build APK
         working-directory: qa_adder
+        env:
+          JAVA_HOME: /usr/lib/jvm/temurin-17-jdk-amd64
         run: buildozer android debug
 
       - name: Copy APK out
         run: |
-          echo "=== buildozer dists ==="
-          find .buildozer/android/platform -name "*.apk" -type f 2>/dev/null
-          echo "=== gradle outputs ==="
-          find .buildozer -path "*/build/outputs/apk/*.apk" 2>/dev/null
-          echo "=== copying to output/ ==="
           mkdir -p output
           find . -name "*.apk" -type f -exec cp -v {} output/ \; 2>/dev/null
-          find /tmp -name "*.apk" -type f -exec cp -v {} output/ \; 2>/dev/null
-          find /home -name "*.apk" -type f -exec cp -v {} output/ \; 2>/dev/null
-          echo "=== output contents ==="
-          ls -la output/ 2>/dev/null || echo "output dir empty"
+          ls -la output/ || echo "output empty"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
