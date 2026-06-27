@@ -9,6 +9,7 @@ jobs:
   build-qa-app:
     name: Build Q&A 答题 APK
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -22,22 +23,26 @@ jobs:
 
       - name: Build APK
         working-directory: qa_app
-        env:
-          ANDROID_HOME: ""
-          ANDROID_SDK_ROOT: ""
-          ANDROID_NDK_HOME: ""
-          ANDROID_NDK_ROOT: ""
-        run: buildozer android debug
+        run: |
+          buildozer android debug 2>&1 | tee build.log
+          echo "=== SEARCHING FOR APK ==="
+          find / -name "*.apk" -type f 2>/dev/null | head -20
+          echo "=== LS BIN ==="
+          ls -laR bin/ 2>/dev/null || echo "no bin"
+          echo "=== BUILD LOG TAIL ==="
+          tail -50 build.log 2>/dev/null || true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: Q&A答题-APK
-          path: "**/bin/*.apk"
+          path: "**/*.apk"
 
   build-qa-adder:
     name: Build Q&A 添加题目 APK
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
 
@@ -51,15 +56,18 @@ jobs:
 
       - name: Build APK
         working-directory: qa_adder
-        env:
-          ANDROID_HOME: ""
-          ANDROID_SDK_ROOT: ""
-          ANDROID_NDK_HOME: ""
-          ANDROID_NDK_ROOT: ""
-        run: buildozer android debug
+        run: |
+          buildozer android debug 2>&1 | tee build.log
+          echo "=== SEARCHING FOR APK ==="
+          find / -name "*.apk" -type f 2>/dev/null | head -20
+          echo "=== LS BIN ==="
+          ls -laR bin/ 2>/dev/null || echo "no bin"
+          echo "=== BUILD LOG TAIL ==="
+          tail -50 build.log 2>/dev/null || true
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: Q&A添加题目-APK
-          path: "**/bin/*.apk"
+          path: "**/*.apk"
