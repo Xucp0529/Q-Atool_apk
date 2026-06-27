@@ -15,26 +15,16 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip cmake git wget libssl-dev libffi-dev
+          sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip cmake git wget libssl-dev libffi-dev libltdl-dev
 
       - name: Install Cython and Buildozer
         run: |
           pip install --upgrade pip setuptools wheel
           pip install cython virtualenv buildozer
 
-      - name: Verify tools
-        run: |
-          python3 --version
-          java -version 2>&1 || true
-          pip show buildozer | head -5
-          which buildozer || echo "buildozer not on PATH"
-
       - name: Build APK
         working-directory: qa_app
-        run: python3 -m buildozer android debug 2>&1 || true
-
-      - name: List output
-        run: find qa_app -name "*.apk" 2>/dev/null || echo "No APK found"
+        run: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -52,24 +42,16 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip cmake git wget libssl-dev libffi-dev
+          sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip cmake git wget libssl-dev libffi-dev libltdl-dev
 
       - name: Install Cython and Buildozer
         run: |
           pip install --upgrade pip setuptools wheel
           pip install cython virtualenv buildozer
 
-      - name: Verify tools
-        run: |
-          python3 --version
-          pip show buildozer | head -5
-
       - name: Build APK
         working-directory: qa_adder
-        run: python3 -m buildozer android debug 2>&1 || true
-
-      - name: List output
-        run: find qa_adder -name "*.apk" 2>/dev/null || echo "No APK found"
+        run: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
