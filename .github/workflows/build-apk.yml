@@ -22,9 +22,26 @@ jobs:
           pip install --upgrade pip setuptools wheel
           pip install cython virtualenv buildozer
 
+      - name: Diagnostics
+        run: |
+          echo "=== Python ==="
+          python3 --version
+          echo "=== Java ==="
+          java -version
+          echo "=== Buildozer location ==="
+          which buildozer || find / -name "buildozer" -type f 2>/dev/null | head -5
+          echo "=== pip show buildozer ==="
+          pip show buildozer
+          echo "=== PATH ==="
+          echo $PATH
+          echo "=== Python path ==="
+          python3 -c "import buildozer; print(buildozer.__file__)"
+
       - name: Build APK
         working-directory: qa_app
-        run: buildozer android debug
+        run: |
+          export PATH=$HOME/.local/bin:$PATH
+          buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -49,9 +66,24 @@ jobs:
           pip install --upgrade pip setuptools wheel
           pip install cython virtualenv buildozer
 
+      - name: Diagnostics
+        run: |
+          echo "=== Python ==="
+          python3 --version
+          echo "=== Java ==="
+          java -version
+          echo "=== Buildozer location ==="
+          which buildozer || find / -name "buildozer" -type f 2>/dev/null | head -5
+          echo "=== pip show buildozer ==="
+          pip show buildozer
+          echo "=== PATH ==="
+          echo $PATH
+
       - name: Build APK
         working-directory: qa_adder
-        run: buildozer android debug
+        run: |
+          export PATH=$HOME/.local/bin:$PATH
+          buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
