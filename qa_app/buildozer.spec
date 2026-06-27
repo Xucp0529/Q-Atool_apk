@@ -33,6 +33,9 @@ android.ndk = 25b
 android.bootstrap = webview
 android.port = 5000
 
+# 自动接受 SDK 许可证
+android.accept_sdk_license = True
+
 # 架构
 android.arch = arm64-v8a
 

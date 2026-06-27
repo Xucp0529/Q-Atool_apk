@@ -17,6 +17,12 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq python3-pip openjdk-17-jdk-headless
 
+      - name: Setup Android SDK environment
+        run: |
+          mkdir -p $HOME/.buildozer/android/platform/android-sdk/licenses
+          echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > $HOME/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+          echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> $HOME/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+
       - name: Install Buildozer
         run: pip install buildozer cython
 
@@ -40,6 +46,12 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq python3-pip openjdk-17-jdk-headless
+
+      - name: Setup Android SDK environment
+        run: |
+          mkdir -p $HOME/.buildozer/android/platform/android-sdk/licenses
+          echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > $HOME/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+          echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> $HOME/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
 
       - name: Install Buildozer
         run: pip install buildozer cython
