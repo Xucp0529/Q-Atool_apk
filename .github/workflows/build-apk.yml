@@ -12,36 +12,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install system dependencies
+      - name: Install deps
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip cmake git wget libssl-dev libffi-dev libltdl-dev
+          sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip libssl-dev libffi-dev libltdl-dev
 
-      - name: Install Cython and Buildozer
-        run: |
-          pip install --upgrade pip setuptools wheel
-          pip install cython virtualenv buildozer
-
-      - name: Diagnostics
-        run: |
-          echo "=== Python ==="
-          python3 --version
-          echo "=== Java ==="
-          java -version
-          echo "=== Buildozer location ==="
-          which buildozer || find / -name "buildozer" -type f 2>/dev/null | head -5
-          echo "=== pip show buildozer ==="
-          pip show buildozer
-          echo "=== PATH ==="
-          echo $PATH
-          echo "=== Python path ==="
-          python3 -c "import buildozer; print(buildozer.__file__)"
+      - name: Install Buildozer
+        run: pip install cython buildozer
 
       - name: Build APK
         working-directory: qa_app
-        run: |
-          export PATH=$HOME/.local/bin:$PATH
-          buildozer android debug
+        env:
+          ANDROID_HOME: ""
+          ANDROID_SDK_ROOT: ""
+          ANDROID_NDK_HOME: ""
+          ANDROID_NDK_ROOT: ""
+        run: buildozer android debug 2>&1 | tail -100
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -56,34 +42,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install system dependencies
+      - name: Install deps
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip cmake git wget libssl-dev libffi-dev libltdl-dev
+          sudo apt-get install -y -qq python3-pip python3-dev openjdk-17-jdk-headless autoconf automake libtool zip unzip libssl-dev libffi-dev libltdl-dev
 
-      - name: Install Cython and Buildozer
-        run: |
-          pip install --upgrade pip setuptools wheel
-          pip install cython virtualenv buildozer
-
-      - name: Diagnostics
-        run: |
-          echo "=== Python ==="
-          python3 --version
-          echo "=== Java ==="
-          java -version
-          echo "=== Buildozer location ==="
-          which buildozer || find / -name "buildozer" -type f 2>/dev/null | head -5
-          echo "=== pip show buildozer ==="
-          pip show buildozer
-          echo "=== PATH ==="
-          echo $PATH
+      - name: Install Buildozer
+        run: pip install cython buildozer
 
       - name: Build APK
         working-directory: qa_adder
-        run: |
-          export PATH=$HOME/.local/bin:$PATH
-          buildozer android debug
+        env:
+          ANDROID_HOME: ""
+          ANDROID_SDK_ROOT: ""
+          ANDROID_NDK_HOME: ""
+          ANDROID_NDK_ROOT: ""
+        run: buildozer android debug 2>&1 | tail -100
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

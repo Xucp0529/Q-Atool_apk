@@ -26,6 +26,7 @@ android.port = 5000
 android.api = 29
 android.minapi = 29
 android.ndk = 25b
+android.build_tools_version = 29.0.3
 
 # 自动接受 SDK 许可证（关键！）
 android.accept_sdk_license = yes
