@@ -27,7 +27,7 @@ jobs:
           ANDROID_SDK_ROOT: ""
           ANDROID_NDK_HOME: ""
           ANDROID_NDK_ROOT: ""
-        run: buildozer android debug 2>&1 | tail -100
+        run: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -57,7 +57,7 @@ jobs:
           ANDROID_SDK_ROOT: ""
           ANDROID_NDK_HOME: ""
           ANDROID_NDK_ROOT: ""
-        run: buildozer android debug 2>&1 | tail -100
+        run: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
