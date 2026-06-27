@@ -1,38 +1,30 @@
 [app]
 
-# 应用基本信息
-title = Q&A 添加题目
+title = QA Adder
 package.name = qaadder
 package.domain = com.qatool
 source.dir = .
 source.include_exts = py,html,css,js,json,txt
 version = 1.0
 
-# 依赖
 requirements = python3,flask
 
-# 权限
 android.permissions = INTERNET
 
-# 方向
 orientation = portrait
 fullscreen = 0
 
-# WebView bootstrap（Flask 应用使用）
 android.bootstrap = webview
 android.port = 5000
 
-# Android API 级别
 android.api = 29
 android.minapi = 29
 android.ndk = 25b
-android.build_tools_version = 29.0.3
 
-# 自动接受 SDK 许可证（关键！）
 android.accept_sdk_license = yes
-
-# 架构
 android.arch = arm64-v8a
+
+p4a.branch = develop
 
 [buildozer]
 log_level = 2
