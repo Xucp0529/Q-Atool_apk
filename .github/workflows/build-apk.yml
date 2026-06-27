@@ -24,14 +24,18 @@ jobs:
         working-directory: qa_app
         run: buildozer android debug
 
-      - name: Find APK
-        run: find . -name "*.apk" -type f 2>/dev/null || echo "no apk found"
+      - name: Find and copy APK
+        run: |
+          find . -name "*.apk" -type f 2>/dev/null
+          mkdir -p output
+          find . -name "*.apk" -type f -exec cp {} output/ \; 2>/dev/null || true
+          ls -la output/ || echo "No APK files found"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Q&A答题-APK
-          path: "**/*.apk"
+          path: output/*.apk
 
   build-qa-adder:
     name: Build Q&A 添加题目 APK
@@ -51,11 +55,15 @@ jobs:
         working-directory: qa_adder
         run: buildozer android debug
 
-      - name: Find APK
-        run: find . -name "*.apk" -type f 2>/dev/null || echo "no apk found"
+      - name: Find and copy APK
+        run: |
+          find . -name "*.apk" -type f 2>/dev/null
+          mkdir -p output
+          find . -name "*.apk" -type f -exec cp {} output/ \; 2>/dev/null || true
+          ls -la output/ || echo "No APK files found"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Q&A添加题目-APK
-          path: "**/*.apk"
+          path: output/*.apk
