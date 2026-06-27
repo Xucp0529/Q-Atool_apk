@@ -22,20 +22,25 @@ jobs:
 
       - name: Build APK
         working-directory: qa_app
-        run: buildozer android debug
-
-      - name: Find and copy APK
+        env:
+          ANDROID_HOME: ""
+          ANDROID_SDK_ROOT: ""
+          ANDROID_NDK_HOME: ""
+          ANDROID_NDK_ROOT: ""
         run: |
-          find . -name "*.apk" -type f 2>/dev/null
-          mkdir -p output
-          find . -name "*.apk" -type f -exec cp {} output/ \; 2>/dev/null || true
-          ls -la output/ || echo "No APK files found"
+          export PATH=$HOME/.local/bin:$PATH
+          buildozer android debug
+          # Buildozer puts APK in bin/ within workdir
+          ls -la bin/ 2>/dev/null || echo "No bin directory"
+          find .buildozer -name "*.apk" 2>/dev/null || echo "No APK in .buildozer"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Q&A答题-APK
-          path: output/*.apk
+          path: |
+            qa_app/bin/*.apk
+            qa_app/.buildozer/**/*.apk
 
   build-qa-adder:
     name: Build Q&A 添加题目 APK
@@ -53,17 +58,21 @@ jobs:
 
       - name: Build APK
         working-directory: qa_adder
-        run: buildozer android debug
-
-      - name: Find and copy APK
+        env:
+          ANDROID_HOME: ""
+          ANDROID_SDK_ROOT: ""
+          ANDROID_NDK_HOME: ""
+          ANDROID_NDK_ROOT: ""
         run: |
-          find . -name "*.apk" -type f 2>/dev/null
-          mkdir -p output
-          find . -name "*.apk" -type f -exec cp {} output/ \; 2>/dev/null || true
-          ls -la output/ || echo "No APK files found"
+          export PATH=$HOME/.local/bin:$PATH
+          buildozer android debug
+          ls -la bin/ 2>/dev/null || echo "No bin directory"
+          find .buildozer -name "*.apk" 2>/dev/null || echo "No APK in .buildozer"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Q&A添加题目-APK
-          path: output/*.apk
+          path: |
+            qa_adder/bin/*.apk
+            qa_adder/.buildozer/**/*.apk
