@@ -15,37 +15,14 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq \
-            python3-pip \
-            python3-dev \
-            openjdk-17-jdk-headless \
-            autoconf \
-            automake \
-            libtool \
-            libffi-dev \
-            libssl-dev \
-            zlib1g-dev \
-            libncurses5-dev \
-            libncursesw5-dev \
-            libtinfo5 \
-            cmake \
-            zip \
-            unzip \
-            git \
-            wget
+          sudo apt-get install -y -qq python3-pip openjdk-17-jdk-headless autoconf automake libtool cmake zip unzip
 
       - name: Install Buildozer
         run: pip install buildozer cython
 
-      - name: Accept Android SDK licenses
-        run: |
-          mkdir -p $HOME/.android
-          mkdir -p $HOME/.buildozer/android/platform/android-sdk/licenses
-          echo -e "24333f8a63b6825ea9c5514f83c2829b004d1fee" > $HOME/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-
       - name: Build APK
         working-directory: qa_app
-        run: buildozer android debug 2>&1
+        run: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -53,15 +30,6 @@ jobs:
         with:
           name: Q&A答题-APK
           path: qa_app/bin/*.apk
-
-      - name: Upload build logs on failure
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: qa-app-build-logs
-          path: |
-            qa_app/.buildozer/android/platform/build*.log
-            qa_app/.buildozer/*.log
 
   build-qa-adder:
     name: Build Q&A 添加题目 APK
@@ -72,37 +40,14 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq \
-            python3-pip \
-            python3-dev \
-            openjdk-17-jdk-headless \
-            autoconf \
-            automake \
-            libtool \
-            libffi-dev \
-            libssl-dev \
-            zlib1g-dev \
-            libncurses5-dev \
-            libncursesw5-dev \
-            libtinfo5 \
-            cmake \
-            zip \
-            unzip \
-            git \
-            wget
+          sudo apt-get install -y -qq python3-pip openjdk-17-jdk-headless autoconf automake libtool cmake zip unzip
 
       - name: Install Buildozer
         run: pip install buildozer cython
 
-      - name: Accept Android SDK licenses
-        run: |
-          mkdir -p $HOME/.android
-          mkdir -p $HOME/.buildozer/android/platform/android-sdk/licenses
-          echo -e "24333f8a63b6825ea9c5514f83c2829b004d1fee" > $HOME/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-
       - name: Build APK
         working-directory: qa_adder
-        run: buildozer android debug 2>&1
+        run: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
@@ -110,12 +55,3 @@ jobs:
         with:
           name: Q&A添加题目-APK
           path: qa_adder/bin/*.apk
-
-      - name: Upload build logs on failure
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: qa-adder-build-logs
-          path: |
-            qa_adder/.buildozer/android/platform/build*.log
-            qa_adder/.buildozer/*.log
